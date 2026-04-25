@@ -1,0 +1,14 @@
+{
+  "name": "tg-ai-bot",
+  "version": "1.0.0",
+  "description": "Chill AI friend on Telegram — text + voice, powered by Groq",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "groq-sdk": "^0.3.3",
+    "node-telegram-bot-api": "^0.64.0"
+  }
+}

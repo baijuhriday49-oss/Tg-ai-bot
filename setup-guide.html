@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TG AI Bot — Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #060810;
+    --surface: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --tg: #29b6f6;
+    --tg2: #0288d1;
+    --accent: #00e5ff;
+    --green: #00e676;
+    --text: #e8eaf0;
+    --muted: #5a6170;
+    --code-bg: rgba(41,182,246,0.06);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 15%, rgba(41,182,246,0.08) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 60% at 85% 85%, rgba(0,229,255,0.05) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .tg-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--tg), var(--tg2));
+    border-radius: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(41,182,246,0.3);
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--tg), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  /* Feature pills */
+  .features {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 28px 0 0;
+  }
+
+  .feat {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .feat.tg { border-color: rgba(41,182,246,0.3); color: var(--tg); }
+  .feat.g { border-color: rgba(0,230,118,0.3); color: var(--green); }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 18px; margin-top: 48px; }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 26px 30px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .step:nth-child(1) { animation-delay: 0.05s; }
+  .step:nth-child(2) { animation-delay: 0.12s; }
+  .step:nth-child(3) { animation-delay: 0.19s; }
+  .step:nth-child(4) { animation-delay: 0.26s; }
+  .step:nth-child(5) { animation-delay: 0.33s; }
+
+  .step:hover {
+    border-color: rgba(41,182,246,0.25);
+    transform: translateY(-2px);
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--tg), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .step:hover::after { opacity: 1; }
+
+  .step-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--tg);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .step h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+
+  .step p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .step p:last-child { margin-bottom: 0; }
+
+  .step a {
+    color: var(--tg);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(41,182,246,0.3);
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+  }
+
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid rgba(41,182,246,0.15);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    color: var(--tg);
+    white-space: pre;
+    line-height: 1.8;
+  }
+
+  .code-block code .c { color: var(--muted); }
+
+  .ic {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+  }
+
+  .info {
+    background: rgba(41,182,246,0.06);
+    border: 1px solid rgba(41,182,246,0.18);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 0.87rem;
+    color: var(--tg);
+    line-height: 1.6;
+  }
+
+  /* What it does */
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 48px;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  .feat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .feat-card .icon { font-size: 1.6rem; margin-bottom: 10px; }
+  .feat-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+  .feat-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* Done */
+  .done {
+    margin-top: 40px;
+    background: linear-gradient(135deg, rgba(41,182,246,0.08), rgba(0,229,255,0.06));
+    border: 1px solid rgba(41,182,246,0.2);
+    border-radius: 20px;
+    padding: 36px;
+    text-align: center;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+
+  .done .emoji { font-size: 2.4rem; margin-bottom: 14px; }
+
+  .done h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--tg), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .done p { color: var(--muted); font-size: 0.92rem; line-height: 1.7; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 560px) {
+    .container { padding: 36px 16px 80px; }
+    .step { padding: 20px 18px; }
+    .features-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="tg-icon">✈️</div>
+    <h1>Chill AI Friend<br>on <span>Telegram</span></h1>
+    <p class="subtitle">Text it, voice it — your personal AI buddy lives right in your Telegram. Powered by Groq + Whisper.</p>
+    <div class="features">
+      <div class="feat tg">💬 Text chat</div>
+      <div class="feat tg">🎤 Voice in → Voice out</div>
+      <div class="feat g">⚡ Groq speed</div>
+      <div class="feat g">🆓 Free APIs</div>
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-label">STEP 01</div>
+      <h3>Create your Telegram bot</h3>
+      <p>Open Telegram → search <strong>@BotFather</strong> → send <span class="ic">/newbot</span> → give it a name → copy the token it gives you.</p>
+      <div class="info">💡 Takes literally 30 seconds. BotFather is the official Telegram bot.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">STEP 02</div>
+      <h3>Get your Groq API key</h3>
+      <p>Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> → sign up free → create an API key. Used for both chat replies and voice transcription (Whisper).</p>
+    </div>
+
+    <div class="step">
+      <div class="step-label">STEP 03</div>
+      <h3>Install ffmpeg in Termux</h3>
+      <p>Needed to convert Telegram voice messages (ogg) before transcribing.</p>
+      <div class="code-block"><code>pkg install ffmpeg</code></div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">STEP 04</div>
+      <h3>Set up the project</h3>
+      <div class="code-block"><code>mkdir tg-ai-bot && cd tg-ai-bot
+<span class="c"># drop bot.js, package.json, .env.example here</span>
+npm install
+cp .env.example .env
+nano .env
+<span class="c"># paste your TELEGRAM_BOT_TOKEN and GROQ_API_KEY</span></code></div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">STEP 05</div>
+      <h3>Run it & chat! 🚀</h3>
+      <div class="code-block"><code>node bot.js</code></div>
+      <p style="margin-top:12px">Open your bot on Telegram → send <span class="ic">/start</span> → start chatting or send a voice note!</p>
+      <div class="info">✅ No ngrok needed. No webhook. Just runs and listens via polling. Simple.</div>
+    </div>
+
+  </div>
+
+  <!-- Feature cards -->
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="icon">💬</div>
+      <h4>Text Chat</h4>
+      <p>Just type anything. The AI replies like a chill friend — short, natural, no robot vibes.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">🎤</div>
+      <h4>Voice Messages</h4>
+      <p>Send a voice note → Whisper transcribes it → Groq replies → you get a voice note back.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">🧠</div>
+      <h4>Memory</h4>
+      <p>Remembers the last 20 messages per user. Type /clear to reset anytime.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">🆓</div>
+      <h4>Basically Free</h4>
+      <p>Groq free tier + Google TTS (no key) + Telegram bot API = $0/month.</p>
+    </div>
+  </div>
+
+  <div class="done">
+    <div class="emoji">🤖✈️</div>
+    <h2>Your AI friend is live on Telegram.</h2>
+    <p>No cloud server, no ngrok, no paid plans.<br>Just Termux running on your phone — always on, always free.</p>
+  </div>
+
+</div>
+</body>
+</html>
